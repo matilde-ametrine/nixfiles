@@ -1,0 +1,10 @@
+#!/bin/sh
+
+git crypt status &> /dev/null
+
+if [[ $? != 0 ]]; then
+    echo '/!\ You staged unencrypted files!'
+    exit 1
+fi
+
+find /etc/nixos -name '*.nix' -print0 | xargs -0 nixfmt -c || exit 1
