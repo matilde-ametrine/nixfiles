@@ -43,7 +43,6 @@
           ".config/user-dirs.conf"
           ".config/user-dirs.dirs"
           ".inputrc"
-          ".local/share/xfce4/terminal/colorschemes/nord.theme"
           ".tmux.conf"
           ".vimrc"
           ".xscreensaver"
