@@ -30,6 +30,7 @@
     dateutils
 
     (hiPrio parallel)
+    netcdf
     nco
     cdo
     mitscheme
