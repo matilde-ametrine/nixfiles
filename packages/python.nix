@@ -12,6 +12,7 @@ with pkgs; {
 
         xarray
         netcdf4
+        cftime
         numpy
         pandas
         intake
