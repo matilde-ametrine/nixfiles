@@ -7,27 +7,36 @@
     any-nix-shell
     nix-index
 
+    git
+    git-crypt
     borgbackup
+
+    psmisc
+    htop
     file
     tree
     moreutils
     unzip
 
-    git
     direnv
+    nix-diff
     nixfmt
     nixpkgs-fmt
-    shellcheck
 
-    psmisc
-    htop
-    cpufrequtils
-
+    units
     clac
     rink
-    units
     pcalc
     dateutils
+
+    (hiPrio parallel)
+    nco
+    cdo
+    mitscheme
+
+    samtools
+    vcftools
+    igv
 
     texlive.combined.scheme-full
     graphviz

@@ -26,7 +26,7 @@ with pkgs; {
         #obspy # https://github.com/NixOS/nixpkgs/pull/140233
 
         scikitlearn
-        tensorflowWithCuda
+        tensorflow#WithCuda
       ]))
   ];
 }
