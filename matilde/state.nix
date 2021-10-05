@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
-{
+let
+  state = "/nix/state";
+in {
   imports = [ "/home/matilde/projects/home-manager/nixos" ];
 
   home-manager = {
@@ -9,7 +11,7 @@
     users.matilde = {
       imports = [ "/home/matilde/projects/impermanence/home-manager.nix" ];
 
-      home.persistence."/nix/state/home" = {
+      home.persistence."${state}/home" = {
         directories = [
           ".cache"
           ".config/autostart"
