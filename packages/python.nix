@@ -24,7 +24,7 @@ with pkgs; {
         cartopy
         matplotlib
         scipy
-        #obspy # https://github.com/NixOS/nixpkgs/pull/140233
+        obspy
 
         scikitlearn
         tensorflow#WithCuda
