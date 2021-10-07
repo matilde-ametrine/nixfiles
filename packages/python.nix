@@ -27,7 +27,7 @@ with pkgs; {
         obspy
 
         scikitlearn
-        tensorflow#WithCuda
+        tensorflowWithCuda
       ]))
   ];
 }
