@@ -10,6 +10,7 @@
     git
     git-crypt
     borgbackup
+    sshfs
 
     psmisc
     htop
