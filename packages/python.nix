@@ -25,6 +25,8 @@ with pkgs; {
         matplotlib
         scipy
         obspy
+        astropy
+        astroquery
 
         scikitlearn
         tensorflowWithCuda
