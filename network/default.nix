@@ -23,6 +23,7 @@ with pkgs; {
     wget
     lftp
     youtube-dl
+    sshfs
 
     nmap
     aircrack-ng
