@@ -10,7 +10,6 @@
     git
     git-crypt
     borgbackup
-    sshfs
 
     psmisc
     htop
@@ -30,6 +29,7 @@
     pcalc
     dateutils
 
+    weather
     (hiPrio parallel)
     netcdf
     nco
