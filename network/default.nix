@@ -21,6 +21,7 @@ with pkgs; {
     ipv6calc
 
     wget
+    lftp
     youtube-dl
 
     nmap
