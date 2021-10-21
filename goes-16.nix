@@ -3,7 +3,6 @@
 with pkgs;
 let
   url = "https://cdn.star.nesdis.noaa.gov/GOES16/ABI/CONUS/GEOCOLOR/latest.jpg";
-  size = "3840x2160";
   outputPath = "/data/2.media/2.photos/4.backgrounds/goes-16.jpg";
 in {
   systemd.services.goes-16 = {
@@ -15,9 +14,14 @@ in {
       code=$(${wget}/bin/wget -N -T 15 ${url} 2>&1 \
              | ${gawk}/bin/awk '/^HTTP request sent/ {print $6}')
 
-      if [[ $code == 200 ]]; then
+      if [[ $code == 200 || ! -e ${outputPath} ]]; then
+        text=$(date -r /tmp/goes-16/latest.jpg '+(Photo updated: %F %H%M%z)')
+
         ${imagemagick}/bin/convert /tmp/goes-16/latest.jpg \
-          -resize '${size}^' -gravity north -crop ${size}+0+0 +repage \
+          -resize '3840x2160^' -gravity north -crop 3840x2160+0+0 +repage \
+          -font 'Fira-Sans-Medium' -pointsize 96 \
+            -fill white -stroke black -strokewidth 8 -annotate +0+128 "$text" \
+            -stroke white -strokewidth 1 -annotate +0+128 "$text" \
           ${outputPath}
       fi
     '';
