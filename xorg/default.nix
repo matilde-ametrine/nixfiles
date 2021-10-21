@@ -1,31 +1,26 @@
 { config, pkgs, ... }:
 
 with pkgs; {
-  imports = [ ./xfce.nix ./audio.nix ./nvidia.nix ];
+  imports = [ ./xfce.nix ./audio.nix ];
 
   nixpkgs.config.allowUnfree = true; # [ discord minecraft zoom-us ];
 
   environment.systemPackages = [
-    firefox
-    tor-browser-bundle-bin
-
+    celestia
     discord
-    zoom-us
-
-    transmission-gtk
-
+    firefox
+    gimp
+    igv
     minecraft
+    openscad
+    redshift
+    stellarium
+    tor-browser-bundle-bin
+    transmission-gtk
+    zoom-us
   ];
 
-  fonts.fonts = [
-    iosevka-bin
-
-    noto-fonts
-    noto-fonts-extra
-
-    fira
-    fira-mono
-  ];
+  fonts.fonts = [ fira fira-mono iosevka-bin noto-fonts noto-fonts-extra ];
 
   services.xserver = {
     enable = true;

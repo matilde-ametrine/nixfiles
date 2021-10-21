@@ -4,48 +4,46 @@
   imports = [ ./python.nix ./cesm.nix ];
 
   environment.systemPackages = with pkgs; [
+    (hiPrio parallel)
+    angband
     any-nix-shell
-    nix-index
-
+    borgbackup
+    cdo
+    clac
+    crunch
+    dateutils
+    direnv
+    file
+    gdb
     git
     git-crypt
-    borgbackup
-
-    psmisc
+    graphviz
     htop
-    file
-    tree
+    imagemagick
+    man-pages
+    maxima
+    mitscheme
     moreutils
-    unzip
-
-    direnv
+    nco
+    netcdf
     nix-diff
+    nix-doc
+    nix-index
     nixfmt
     nixpkgs-fmt
-
-    units
-    clac
-    rink
+    optipng
     pcalc
-    dateutils
-
-    weather
-    (hiPrio parallel)
-    netcdf
-    nco
-    cdo
-    mitscheme
-
+    psmisc
+    racket
+    rink
+    sage
     samtools
-    vcftools
-    igv
-
     texlive.combined.scheme-full
-    graphviz
-    imagemagick
-
-    man-pages
-    nix-doc
+    tree
+    units
+    unzip
+    valgrind
+    vcftools
   ];
 
   programs = {

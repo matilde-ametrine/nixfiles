@@ -14,7 +14,7 @@ in {
   virtualisation.docker.enable = true;
 
   systemd.services.cesm-image-loader = {
-    description = "CESM 2.2 Docker image loader";
+    description = "CESM2.2 image loader";
 
     script = ''
       ${docker}/bin/docker load < ${image}

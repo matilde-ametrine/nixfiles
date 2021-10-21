@@ -6,30 +6,31 @@ with pkgs; {
   environment.systemPackages = [
     (python39.withPackages (pyPkgs:
       with pyPkgs; [
-        flake8
-        requests
-        pycryptodomex
-
-        xarray
-        netcdf4
-        cftime
-        numpy
-        pandas
-        intake
-
-        numba
-        dask
-        joblib
-
-        cartopy
-        matplotlib
-        scipy
-        obspy
         astropy
         astroquery
-
+        beautifulsoup4
+        biopython
+        cartopy
+        cftime
+        dask
+        flake8
+        intake
+        joblib
+        matplotlib
+        netcdf4
+        networkx
+        numba
+        numpy
+        obspy
+        pandas
+        pycryptodomex
+        requests
         scikitlearn
+        scipy
+        seaborn
+        sympy
         tensorflowWithCuda
+        xarray
       ]))
   ];
 }

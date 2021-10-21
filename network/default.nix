@@ -11,23 +11,24 @@ with pkgs; {
   ];
 
   environment.systemPackages = [
+    aircrack-ng
     bind
     inetutils
-    netcat-gnu
-    ssh-tools
-    nethogs
-
     ipcalc
     ipv6calc
-
-    wget
-    lftp
-    youtube-dl
-    sshfs
-
-    nmap
-    aircrack-ng
     kismet
+    lftp
+    macchanger
+    netcat-gnu
+    nethogs
+    nmap
+    reaverwps-t6x
+    ssh-tools
+    sshfs
+    w3m
+    weather
+    wget
+    youtube-dl
   ];
 
   networking = {
