@@ -13,6 +13,7 @@ in {
     "/etc/nixos" = "${state}/data/3.software/1.github/matilde-ametrine/nixfiles";
     "/tmp" = "/nix/tmp";
     "/var/lib/bluetooth" = "${state}/bluetooth";
+    "/var/lib/vnstat" = "${state}/vnstat";
     "/var/lib/yggdrasil" = "${state}/yggdrasil";
     "/var/log" = "${state}/log";
   } // {
