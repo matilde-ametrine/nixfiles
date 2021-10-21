@@ -12,7 +12,8 @@ in {
     description = "Kiwix-Serve";
 
     script = ''
-      ${kiwix-tools}/kiwix-serve -p 42069 $(find /data/kiwix.org -name '*.zim')
+      ${kiwix-tools}/kiwix-serve -p 42069 \
+        $(find /data/7.kiwix -name '*.zim' | sort)
     '';
 
     after = [ "network-online.target" ];

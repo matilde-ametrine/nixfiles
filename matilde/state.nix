@@ -1,17 +1,17 @@
 { config, pkgs, ... }:
 
-let
-  state = "/nix/state";
+let github = "/nix/state/data/3.software/1.github";
 in {
-  imports = [ "/home/matilde/projects/home-manager/nixos" ];
+  imports = [ "${github}/nix-community/home-manager/nixos" ];
 
   home-manager = {
     useGlobalPkgs = true;
 
     users.matilde = {
-      imports = [ "/home/matilde/projects/impermanence/home-manager.nix" ];
+      imports =
+        [ "${github}/nix-community/impermanence/home-manager.nix" ];
 
-      home.persistence."${state}/home" = {
+      home.persistence."${github}/matilde-ametrine/dotfiles" = {
         directories = [
           ".cache"
           ".config/autostart"
@@ -33,11 +33,6 @@ in {
           ".secrets"
           ".ssh"
           ".vim"
-          "documents"
-          "downloads"
-          "music"
-          "pictures"
-          "projects"
         ];
 
         files = [

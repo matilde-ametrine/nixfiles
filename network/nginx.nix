@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 
-let content = import /home/matilde/projects/diffyq;
+let content = import /data/3.software/1.github/matilde-ametrine/diffyq;
 in {
   services.nginx = {
     enable = true;
