@@ -9,6 +9,7 @@
     ./xorg
     ./network
     ./packages
+    ./goes-16.nix
   ];
 
   system.stateVersion = "21.11";
