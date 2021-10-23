@@ -5,7 +5,7 @@
     enable = true;
     autoMount = true;
 
-    dataDir = "/nix/state/ipfs";
+    dataDir = "/nix/persist/ipfs";
     enableGC = true;
   };
 

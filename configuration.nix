@@ -4,7 +4,7 @@
   imports = [
     ./hardware.nix
     ./security.nix
-    ./state.nix
+    ./persistence.nix
     ./matilde
     ./xorg
     ./network
@@ -13,6 +13,9 @@
   ];
 
   system.stateVersion = "21.11";
+
+  nixpkgs.config.allowUnfree = true;
+  environment.systemPackages = [ pkgs.microcodeIntel ]; # Unfree.
 
   boot.loader = {
     systemd-boot = {

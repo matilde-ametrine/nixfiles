@@ -5,8 +5,6 @@
     yggdrasil = {
       enable = true;
 
-      persistentKeys = true;
-
       config = {
         Peers = [
           "tcp://213.188.199.150:10010"
@@ -16,6 +14,8 @@
 
         IfName = "ygg0";
       };
+
+      configFile = /nix/persist/yggdrasil.json; # Secret keys!
     };
 
     i2pd = {

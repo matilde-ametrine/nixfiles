@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./state.nix ];
+  imports = [ ./persistence.nix ];
 
   users = {
     mutableUsers = false;

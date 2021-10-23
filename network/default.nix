@@ -37,6 +37,4 @@ with pkgs; {
 
     interfaces.enp3s0.useDHCP = true;
   };
-
-  services.vnstat.enable = true;
 }

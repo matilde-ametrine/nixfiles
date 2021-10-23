@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 
-let github = "/nix/state/data/3.software/1.github";
+let github = "/data/3.software/1.github";
 in {
   imports = [ "${github}/nix-community/home-manager/nixos" ];
 
