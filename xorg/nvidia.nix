@@ -3,7 +3,7 @@
 {
   nixpkgs.config.allowUnfree = true;
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia" ]; # Unfree.
 
   hardware.nvidia.prime = {
     sync.enable = true;

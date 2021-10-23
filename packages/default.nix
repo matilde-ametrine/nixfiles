@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [ ./python.nix ./cesm.nix ];
+  imports = [ ./python.nix ./cesm-lab.nix ];
 
   environment.systemPackages = with pkgs; [
     (hiPrio parallel)
@@ -38,6 +38,7 @@
     rink
     sage
     samtools
+    smartmontools
     texlive.combined.scheme-full
     tree
     units

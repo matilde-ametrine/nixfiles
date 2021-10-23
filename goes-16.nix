@@ -19,7 +19,7 @@ in {
 
         ${imagemagick}/bin/convert /tmp/goes-16/latest.jpg \
           -resize '3840x2160^' -gravity north -crop 3840x2160+0+0 +repage \
-          -font 'Fira-Sans-Medium' -pointsize 96 \
+          -font 'Fira-Sans-Medium' -pointsize 64 \
             -fill white -stroke black -strokewidth 8 -annotate +0+128 "$text" \
             -stroke white -strokewidth 1 -annotate +0+128 "$text" \
           ${outputPath}

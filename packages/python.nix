@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 with pkgs; {
-  nixpkgs.config.allowUnfree = true; # tensorflowWithCuda
+  nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = [
     (python39.withPackages (pyPkgs:
@@ -29,7 +29,7 @@ with pkgs; {
         scipy
         seaborn
         sympy
-        tensorflowWithCuda
+        tensorflowWithCuda # Unfree.
         xarray
       ]))
   ];
