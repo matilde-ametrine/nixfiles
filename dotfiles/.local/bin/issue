@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+
+[[ -z $TMUX || $(tmux list-panes | wc -l) == 1 ]] || exit
+
+fqdn=$HOST.y.diffyq.xyz
+
+version=$(nixos-version)
+
+rt=$(date -r ~/.cache/replica '+%s' 2> /dev/null || echo 0)
+rd=$((($(date '+%s') - $rt) / 86400.))
+rt=$(date '+%F %H%M%z' --date=@$rt)
+
+df=$(df -BG --output=used,pcent,avail /nix | tr -d G \
+     | awk 'NR == 2 {print $1" GiB ("$2") used, "$3" GiB free"}')
+
+c0=$'\e[0;30;1m'
+c1=$'\e[0;36;1m'
+c2=$'\e[0m'
+
+stty -echo
+clear
+
+echo   "${c0}+·· ${c1}Domain name${c0} ········ ${c2}$fqdn"
+echo   "${c0}+·· ${c1}NixOS version${c0} ······ ${c2}$version"
+printf "${c0}+·· ${c1}Replication drift${c0} ·· ${c2}%.1f days ($rt)\n" $rd
+echo   "${c0}+·· ${c1}Storage usage${c0} ······ ${c2}$df"
+
+date $'+\nIt is %A, %F %H%M%z.'
+echo "Execute \`${c1}wx <station>${c2}\` to show the weather."
+echo "\nAll that is not saved shall be lost."

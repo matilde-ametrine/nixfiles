@@ -1,0 +1,24 @@
+axes.edgecolor: 3b4252
+axes.facecolor: white
+axes.formatter.use_mathtext: True
+axes.labelcolor: 3b4252
+axes.prop_cycle: cycler('color', ['bf616a','d08770','ebcb8b','a3be8c','81a1c1','b48ead'])
+figure.autolayout: True
+figure.dpi: 96
+figure.edgecolor: white
+figure.facecolor: white
+font.family: Fira Sans
+grid.color: e5e9f0
+legend.edgecolor: 3b4252
+legend.framealpha: 0.950000
+lines.color: 3b4252
+path.simplify_threshold: 0.100000
+savefig.dpi: 300
+savefig.edgecolor: white
+savefig.facecolor: white
+scatter.marker: .
+text.color: 3b4252
+xtick.color: 3b4252
+xtick.minor.visible: True
+ytick.color: 3b4252
+ytick.minor.visible: True

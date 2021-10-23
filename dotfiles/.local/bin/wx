@@ -1,0 +1,57 @@
+#!/usr/bin/env zsh
+
+stty -echo
+
+c0=$'\e[0;30;1m'
+c1=$'\e[0m'
+
+if [[ $# != 1 ]]; then
+    echo "Usage: $(basename $0) <station>"
+    exit 1
+fi
+
+weather=$(timeout 10 weather --cacheage=60 --cachedir=$HOME/.cache/weather \
+          --headers='temperature,relative_humidity,wind,pressure_(altimeter),sky_conditions' \
+          --metric $1 2> /dev/null | grep -v 'Searching via ')
+
+if [[ -n $weather ]]; then
+    echo   "${c0}+·· ${c1}Time updated${c0} ·······" \
+       $(date --date="$(grep 'Last updated' <<< $weather | tr . / \
+                           | cut -d' ' -f11-)" "+${c1}%F %H%M%z")
+
+    awk "
+        /Temperature: / {
+            print \"${c0}+·· ${c1}Temperature (°C)${c0} ··· ${c1}\"\$2
+        }
+
+        /Relative Humidity: / {
+            sub(\"%\", \"\")
+            print \"${c0}+·· ${c1}Humidity (%)${c0} ······· ${c1}\"\$3
+        }
+
+        /Wind: from / {
+            printf \"${c0}+·· ${c1}Wind vector (kph)${c0} ·· ${c1}\"
+            if(\$2 == \"Calm\")
+                print(\"0\")
+            else
+                print(\$8\" from \"\$4)
+        }
+
+        /Wind: Variable / {
+            print \"${c0}+·· ${c1}Wind vector (kph)${c0} ·· ${c1}Variable\"
+        }
+
+        /Pressure \(altimeter\): / {
+            print \"${c0}+·· ${c1}Pressure (hPa)${c0} ····· ${c1}\"\$3
+        }
+
+        /Sky conditions: / {
+            \$1 = \$2 = \"\";
+            print \"${c0}+·· ${c1}Sky conditions${c0} ····· ${c1}\" \\
+                tolower(substr(\$0, 3))
+        }
+    " <<< $weather
+else
+    echo "Could not fetch weather data."
+    exit 1
+fi

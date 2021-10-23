@@ -11,7 +11,7 @@ in {
       imports =
         [ "${github}/nix-community/impermanence/home-manager.nix" ];
 
-      home.persistence."${github}/matilde-ametrine/dotfiles" = {
+      home.persistence."/etc/nixos/dotfiles" = {
         directories = [
           ".cache"
           ".config/autostart"

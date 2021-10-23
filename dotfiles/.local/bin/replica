@@ -1,0 +1,164 @@
+#!/usr/bin/env zsh
+
+set -e
+
+DISK_1_PATH='/dev/disk/by-uuid/1e97875c-92ae-40ce-ae8a-f3a4011100fe'
+DISK_2_PATH='/dev/disk/by-uuid/1632e3ed-fda5-4688-8bad-e89e0d32dfa1'
+
+mount_luks() {
+    sudo mkdir -p /replica
+
+    if ! mountpoint -q /replica; then
+        if [[ ! -e /dev/mapper/replica ]]; then
+            sudo cryptsetup open $DISK_1_PATH replica \
+                --key-file=/nix/persist/luks
+        fi
+
+        sudo mount /dev/mapper/replica /replica
+    fi
+}
+
+mount_fuse() {
+    mount_luks
+
+    sudo mkdir -p /replica/fuse
+    sudo chown matilde /replica/fuse
+    borg mount /replica/borg /replica/fuse
+}
+
+umount_fuse() {
+    if mountpoint -q /replica/fuse; then
+        borg umount /replica/fuse
+        rmdir /replica/fuse
+    fi
+}
+
+umount_luks() {
+    umount_fuse
+
+    if mountpoint -q /replica; then
+        sudo umount /replica
+        sudo cryptsetup close replica
+        sudo rmdir /replica
+    fi
+}
+
+list() {
+    mount_luks
+
+    df -h /replica
+    echo
+    borg list /replica/borg --sort name \
+            --format "{start:%F (%a)}    {archive}{NEWLINE}" \
+        | sed -r 's/_[0-9]{4}(-[0-9]{2}){2}(-[0-9]{4}){2}//'
+}
+
+create() {
+    umount_fuse
+    mount_luks
+
+    if cd /nix/persist 2> /dev/null; then
+        sudo -E borg -p create -e docker.img -e home/.cache \
+            /replica/borg::'{fqdn}_{now:%F-%H%M%z}' *
+        sudo -E borg -p prune /replica/borg -d 7 -w 4 -m 12 -y -1 -P '{fqdn}_'
+        sudo chown -R matilde /replica/borg
+    fi
+
+    if ! mountpoint -q /cola; then
+        sudo mkdir /cola 2> /dev/null && sudo chown matilde /cola
+        sshfs -o ro -o transform_symlinks -o idmap=user -o reconnect \
+              -o ServerAliveInterval=15 -o ServerAliveCountMax=3 cola1:/ /cola
+    fi
+
+    if cd /cola/homes/nlydeen 2> /dev/null; then
+        borg -p create --files-cache=ctime,size \
+            /replica/borg::'cola.gmu.edu_{now:%F-%H%M%z}' *
+        borg -p prune /replica/borg -d 7 -w 4 -m -1 -P 'cola.gmu.edu_'
+    fi
+
+    cd /
+    sudo umount /cola
+    sudo rmdir /cola
+
+    touch ~/.cache/replica
+
+    list
+}
+
+assimilate() {
+    if [[ ! -e $DISK_2_PATH ]]; then
+        echo "\e[31mError:\e[0m \`$DISK_2_PATH\` not found."
+        exit 1
+    fi
+
+    repo_size=$(du -sh /replica/borg | cut -d$'\t' -f1)
+
+    echo "You are about to perform the following actions:"
+    echo "  (1) (Re)mount the following archive as read-only:"
+    echo "      - \e[34m/replica\e[0m <- \e[34m$DISK_1_PATH\e[0m"
+    echo "  (2) Verify the integrity of the following repository:"
+    echo "      - \e[34m/replica/borg\e[0m ($repo_size)"
+    echo "  (3) Assimilate the following archives (conditionally):"
+    echo "      - \e[34m$DISK_2_PATH\e[0m"
+    echo "      - \e[31mssh://matilde@valinor.y.diffyq.xyz\e[0m"
+    echo "\nThese processes will take several hours."
+
+    echo -n "Do you wish to proceed? [y/N] " >&2
+    read confirm
+
+    [[ $confirm == "Y" || $confirm == "y" ]] || exit 1
+
+    mount_luks
+
+    # Remount `/replica` as read-only to reduce the risk of catastrophe.
+    sudo mount -o remount,ro /replica || exit 1
+    sudo touch /replica/read-only-test 2> /dev/null && exit 1 || true
+
+    # It's completely safe to bypass the locking mechanism if `/replica/borg`
+    # is read-only (and it is).
+    borg -pv --bypass-lock check --verify-data /replica/borg || exit 1
+
+    # TODO: Implement assimilation of `valinor.y.diffyq.xyz`.
+
+    sudo mkdir -p /replica-1
+    sudo cryptsetup open $DISK_2_PATH replica-1 --key-file=/nix/persist/luks
+    sudo mount /dev/mapper/replica-1 /replica-1
+
+    rsync_size=$(rsync -a --dry-run --stats --no-human-readable \
+                     /replica/borg/ /replica-1/borg/ \
+                 | awk '/Total transferred file size: / {print $5; quit}')
+    free_space=$(($(df -B1 /replica-1 | tail -1 | cut -d' ' -f4) - 1e9))
+
+    if [[ $rsync_size -gt $free_space ]]; then
+        echo "Insufficient free space." >&2
+        exit 1
+    fi
+
+    rsync -ah --delete --info=progress2 /replica/borg/ /replica-1/borg/
+
+    sudo umount /replica-1
+    sudo cryptsetup close replica-1
+    sudo rmdir /replica-1
+
+    sudo mount -o remount,rw /replica
+}
+
+usage() {
+    echo 'Usage: replica <command>'
+    exit 1
+}
+
+[[ $# == 1 ]] || usage
+
+case $1 in
+    create) create ;;
+    list) list ;;
+    mount) mount_fuse ;;
+    mount_fuse) mount_fuse ;;
+    mount_luks) mount_luks ;;
+    assimilate) assimilate ;;
+    umount) umount_luks ;;
+    umount_fuse) umount_fuse ;;
+    umount_luks) umount_luks ;;
+    *) usage ;;
+esac
