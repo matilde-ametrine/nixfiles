@@ -1,0 +1,2 @@
+**/secrets/** filter=git-crypt diff=git-crypt
+/users/matilde/secrets/7eb00c97414ce57a.txt filter=none diff=none

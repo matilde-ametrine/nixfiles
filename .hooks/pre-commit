@@ -1,0 +1,4 @@
+#!/bin/sh
+
+git crypt status &> /dev/null || exit 1
+find . -name '*.nix' -print0 | xargs -0 nixfmt -c || exit 1
